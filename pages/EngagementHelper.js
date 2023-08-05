@@ -82,9 +82,6 @@ const engagementMessageOverTimeChartOptions = (messageCountList, channels) => {
     }
   });
 
-  const minDate = new Date(minDateString);
-  const maxDate = new Date(maxDateString);
-
   // looping through each channel in channelDateMap and building the categories and series object as required to the charting library
   for (let channelId in channelDateMap) {
     const noOfDates = Object.keys(channelDateMap[channelId]).length;
@@ -96,8 +93,8 @@ const engagementMessageOverTimeChartOptions = (messageCountList, channels) => {
       };
 
       for (
-        let startDate = minDate;
-        startDate <= maxDate;
+        let startDate = new Date(minDateString);
+        startDate <= new Date(maxDateString);
         startDate.setDate(startDate.getDate() + 1)
       ) {
         if (!datesGenerated) {
