@@ -1,3 +1,4 @@
+// A function to conver ISO string like 2022-10-17T00:00:00.000Z to date and month like 17 Oct"
 const convertISODateToDateAndMonth = (date) => {
   const numericDate = date.getDate();
   const numericMonth = date.getMonth() + 1;
@@ -34,7 +35,9 @@ const engagementMessageOverTimeChartOptions = (messageCountList, channels) => {
   const chartCategories = [];
   const chartSeries = [];
 
+  // looping through each messageCount
   messageCountList.forEach(({ count, channelId, timeBucket }, index) => {
+    // initializing the earliest and latest dates in the list
     if (!index) {
       minDateString = timeBucket;
       maxDateString = timeBucket;
@@ -46,6 +49,8 @@ const engagementMessageOverTimeChartOptions = (messageCountList, channels) => {
       }
     }
 
+    // checking and storing if a specific channel exist in channels array or not
+    // so that we don't have to run find function on array time and again
     let doesChannelExist;
     if (channelExistenceMap[channelId]) {
       if (channelExistenceMap[channelId] === "false") {
@@ -58,6 +63,12 @@ const engagementMessageOverTimeChartOptions = (messageCountList, channels) => {
       channelExistenceMap[channelId] = doesChannelExist ? true : "false";
     }
 
+    // storing the dates and number of messages of a specific channel
+    // the channelDateMap looks something like this
+    // channelDateMap = {
+    //         channelId:{ dateOfMessage:numberOfMessage,date2:number2},
+    //         channelId2:{date3:number3}
+    // }
     if (doesChannelExist) {
       if (channelDateMap[channelId]) {
         if (channelDateMap[channelId][timeBucket]) {
@@ -74,6 +85,7 @@ const engagementMessageOverTimeChartOptions = (messageCountList, channels) => {
   const minDate = new Date(minDateString);
   const maxDate = new Date(maxDateString);
 
+  // looping through each channel in channelDateMap and building the categories and series object as required to the charting library
   for (let channelId in channelDateMap) {
     const noOfDates = Object.keys(channelDateMap[channelId]).length;
     if (noOfDates > 1) {
